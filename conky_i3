@@ -1,0 +1,38 @@
+	
+
+    background        no
+    out_to_console    yes
+    out_to_x          no
+    update_interval   2
+    total_run_times   0
+    short_units       yes
+    pad_percents      3
+     
+    override_utf8_locale yes
+    if_up_strictness address
+     
+    TEXT
+	[ 
+	
+	${if_match "${exec cat /tmp/.update_count}" > "0"}
+	        {"full_text": "   ${exec cat /tmp/.update_count} ","color":"\#9C9C9C"},
+	$endif
+
+	${if_up wlp2s0}
+	        {"full_text": "  ${exec ip -6 addr | grep 'inet6 2' | grep 'scope global temporary dynamic' | sed -e's/^.*inet6 \([^ ]*\)\/.*$/\1/;t;d'} ","color": "\#9C9C9C"},
+                {"full_text": "  [${downspeed wlp2s0}] ", "color":"\#9C9C9C"},
+                {"full_text": "  [${upspeed wlp2s0}] ", "color":"\#9C9C9C"},
+                {"full_text": "  ${exec iwgetid -r} [${exec awk 'NR==3 {print $3 "%"}' /proc/net/wireless | tr -d '.'}] ","color":"\#9C9C9C"},
+	$else
+	        {"full_text": "  ${exec ip -6 addr | grep 'inet6 2' | grep 'scope global temporary dynamic' | sed -e's/^.*inet6 \([^ ]*\)\/.*$/\1/;t;d'} ","color": "\#9C9C9C"},
+		{"full_text": "  [${downspeed enp3s0f1}] ", "color":"\#9C9C9C"},
+		{"full_text": "  [${upspeed enp3s0f1}] ", "color":"\#9C9C9C"},
+                ${if_up enp3s0f1}{"full_text": "  enp3s0f1 ","color":"\#9C9C9C"},
+	$else
+		{"full_text": " ≈ no connection ","color":"\#9C9C9C"},
+	$endif$endif
+        {"full_text": "  ${exec ~/.i3/cputemp.sh}°C [$cpu%] ${exec lscpu | grep 'MHz' | awk '{print $3}' | sed 's/\(.*\)..../\1/' } MHz","color": "\#9C9C9C"},
+        {"full_text": "  [$membar] ", "color":"\#9C9C9C"},#
+	{"full_text": "  [$battery_percent%] ","color":"\#9C9C9C"},
+	{"full_text": "  ${time %a %d %b} ${time %H:%M} ", "color":"\#9C9C9C"}
+	],
