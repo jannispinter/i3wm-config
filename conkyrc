@@ -22,18 +22,18 @@
 	        {"full_text": "  ${exec ip -6 addr | grep 'inet6 2' | grep 'scope global temporary dynamic' | sed -e's/^.*inet6 \([^ ]*\)\/.*$/\1/;t;d'} / ${addr wlp2s0}","color": "\#9C9C9C"},
                 {"full_text": "  [${downspeed wlp2s0}] ", "color":"\#9C9C9C"},
                 {"full_text": "  [${upspeed wlp2s0}] ", "color":"\#9C9C9C"},
-	        ${if_match "${exec awk 'NR==3 {print $3}' /proc/net/wireless | tr -d '.'}" < "35"}
-			${if_match "${exec awk 'NR==3 {print $3}' /proc/net/wireless | tr -d '.'}" < "25"}
-				${if_match "${exec awk 'NR==3 {print $3}' /proc/net/wireless | tr -d '.'}" < "15"}
-					{"full_text": "  ${exec iwgetid -r} [${exec awk 'NR==3 {print $3 "%"}' /proc/net/wireless | tr -d '.'}]","color":"\#FF0000"},
+	        ${if_match "${wireless_link_qual_perc wlp2s0}" < "35"}
+			${if_match "${wireless_link_qual_perc wlp2s0}" < "25"}
+				${if_match "${wireless_link_qual_perc wlp2s0}" < "15"}
+					{"full_text": "  ${wireless_essid wlp2s0} [${wireless_link_qual_perc wlp2s0}%]","color":"\#FF0000"},
 				$else
-					{"full_text": "  ${exec iwgetid -r} [${exec awk 'NR==3 {print $3 "%"}' /proc/net/wireless | tr -d '.'}]","color":"\#FFA500"},
+					{"full_text": "  ${wireless_essid wlp2s0} [${wireless_link_qual_perc wlp2s0}%]","color":"\#FFA500"},
 				$endif
 			$else
-				{"full_text": "  ${exec iwgetid -r} [${exec awk 'NR==3 {print $3 "%"}' /proc/net/wireless | tr -d '.'}]","color":"\#EEEE00"},
+				{"full_text": "  ${wireless_essid wlp2s0} [${wireless_link_qual_perc wlp2s0}%]","color":"\#EEEE00"},
 			$endif	
 		$else
-                	{"full_text": "  ${exec iwgetid -r} [${exec awk 'NR==3 {print $3 "%"}' /proc/net/wireless | tr -d '.'}] ","color":"\#9C9C9C"},
+                	{"full_text": "  ${wireless_essid wlp2s0} [${wireless_link_qual_perc wlp2s0}%]","color":"\#9C9C9C"},
 		$endif
 	$endif
 	${if_up enp3s0f1}
