@@ -9,6 +9,7 @@ My current i3wm configuration and conky scripts
 - conky
 - bash
 - setxkbmap
+- xorg-xbacklight
 - Font Awesome
 
 ## Installation
